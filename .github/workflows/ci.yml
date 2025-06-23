@@ -1,0 +1,49 @@
+name: Java CI with Maven
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Build and Test with Maven
+        run: mvn clean install
+
+      - name: Notify on PR creation
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        run: |
+          curl -X POST https://your-api-endpoint.com/notify \
+            -H "Content-Type: application/json" \
+            -d '{
+              "event": "PR_CREATED",
+              "repo": "${{ github.repository }}",
+              "url": "${{ github.event.pull_request.html_url }}",
+              "author": "${{ github.actor }}"
+            }'
+
+      - name: Notify on Build Failure
+        if: failure()
+        run: |
+          curl -X POST https://your-api-endpoint.com/notify \
+            -H "Content-Type: application/json" \
+            -d '{
+              "event": "BUILD_FAILED",
+              "repo": "${{ github.repository }}",
+              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+              "author": "${{ github.actor }}"
+            }'
