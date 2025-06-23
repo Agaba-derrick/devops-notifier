@@ -24,26 +24,20 @@ jobs:
       - name: Build and Test with Maven
         run: mvn clean install
 
-      - name: Notify on PR creation
-        if: github.event_name == 'pull_request' && github.event.action == 'opened'
-        run: |
-          curl -X POST https://your-api-endpoint.com/notify \
-            -H "Content-Type: application/json" \
-            -d '{
-              "event": "PR_CREATED",
-              "repo": "${{ github.repository }}",
-              "url": "${{ github.event.pull_request.html_url }}",
-              "author": "${{ github.actor }}"
-            }'
+  - name: Notify on PR creation
+    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    run: |
+      curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+        -H 'Content-type: application/json' \
+        --data "{
+          \"text\": \"📣 *New Pull Request Created*\n*Repo:* ${{ github.repository }}\n*Author:* ${{ github.actor }}\n*Link:* ${{ github.event.pull_request.html_url }}\"
+        }"
 
-      - name: Notify on Build Failure
-        if: failure()
-        run: |
-          curl -X POST https://your-api-endpoint.com/notify \
-            -H "Content-Type: application/json" \
-            -d '{
-              "event": "BUILD_FAILED",
-              "repo": "${{ github.repository }}",
-              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-              "author": "${{ github.actor }}"
-            }'
+  - name: Notify on Build Failure
+    if: failure()
+    run: |
+      curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+        -H 'Content-type: application/json' \
+        --data "{
+          \"text\": \"❌ *Build Failed*\n*Repo:* ${{ github.repository }}\n*Actor:* ${{ github.actor }}\n*Workflow:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
+        }"
