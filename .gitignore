@@ -1,0 +1,10 @@
+# Ignore IntelliJ project files
+.idea/
+*.iml
+
+# Ignore Maven target directory
+/target/
+
+# OS-specific ignores
+.DS_Store
+Thumbs.db
