@@ -27,7 +27,7 @@ jobs:
   - name: Notify on PR creation
     if: github.event_name == 'pull_request' && github.event.action == 'opened'
     run: |
-      curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+      curl -X POST ${{ secrets. CI_BOT  }} \
         -H 'Content-type: application/json' \
         --data "{
           \"text\": \"📣 *New Pull Request Created*\n*Repo:* ${{ github.repository }}\n*Author:* ${{ github.actor }}\n*Link:* ${{ github.event.pull_request.html_url }}\"
@@ -36,7 +36,7 @@ jobs:
   - name: Notify on Build Failure
     if: failure()
     run: |
-      curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+      curl -X POST ${{ secrets. CI_BOT  }} \
         -H 'Content-type: application/json' \
         --data "{
           \"text\": \"❌ *Build Failed*\n*Repo:* ${{ github.repository }}\n*Actor:* ${{ github.actor }}\n*Workflow:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
