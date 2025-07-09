@@ -54,6 +54,5 @@ Add new event processors for Jira, SonarQube, deployment tools, and any custom e
 ## ⚡ **Getting Started**
 
 ### 1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/notification-bot.git
-cd notification-bot
+```bashgit clone https://github.com/Agaba-derrick/GitHub-Actions-based-CI-CD-pipeline.git
+cd GitHub-Actions-based-CI-CD-pipeline
