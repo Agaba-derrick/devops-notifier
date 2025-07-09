@@ -1,57 +1,59 @@
-# GitHub-Actions-based-CI-CD-pipeline
-# 🚀 CI Alert Bot Java API
+# 🚀 Java-based CI/CD Notification Bot
 
-This project is a **Java-based backend service** with a fully integrated **CI/CD pipeline using GitHub Actions**, designed to:
-
-- ✅ Run automated builds and tests on each push or pull request
-- ❌ Detect pull request, build/test failures in real-time
-- 📣 Notify an external API (e.g., Slack, Discord, Telegram, custom webhooks) when a failure occurs
+A **centralized, extensible notification microservice** that integrates with GitHub Actions, Jenkins, and other CI/CD systems to keep your team informed proactively and intelligently.
 
 ---
 
-## 🔧 Tech Stack
+## ✨ **Features**
 
-| Layer        | Tech            |
-|--------------|-----------------|
-| Language     | Java 21         |
-| Build Tool   | Maven           |
-| Testing      | JUnit 5         |
-| CI/CD        | GitHub Actions  |
-| Notification | External  `API` |
----
+✅ **Centralized Notification Engine**  
+Receive events from multiple CI/CD pipelines and process them through a single service.
 
-## 📁 Project Structure
+✅ **Multi-Channel Support**  
+Send notifications to Slack, Telegram, Email, Microsoft Teams, and more via pluggable `NotificationSender` classes.
 
-ci-alert-bot-java-api/
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── src/
-│   ├── main/java/com/derrick/app/ExampleService.java
-│   └── test/java/com/derrick/app/ExampleServiceTest.java
-├── pom.xml
-└── README.md
+✅ **Configurable Rules Engine**  
+Define who gets notified about what events, with support for conditions, channels, and teams.
 
+✅ **Scheduled Proactive Notifications**  
+Run daily checks for stale pull requests, failing builds, or other conditions, and notify responsible developers automatically.
+
+✅ **Notification History and Auditing**  
+Log all notifications sent, including timestamps, status, and target channel, for audit and debugging.
+
+✅ **Extensible Event Processing Architecture**  
+Add new event processors for Jira, SonarQube, deployment tools, and any custom event source seamlessly.
 
 ---
 
-## 🔄 CI/CD Workflow Overview
+## 🏗️ **Architecture Overview**
 
-The pipeline is triggered on every push and pull request to the `main` branch. It performs the following steps:
+- **EventProcessor Interface**  
+  Converts incoming event payloads to formatted human-readable messages.
 
-1. ✅ **Checkout** the latest code
-2. 🔧 **Set up Java 21** environment
-3. 🧪 **Build and test** the application with Maven
-4. 🚨 On failure, **trigger a POST request** to a configured API endpoint to notify about the build failure and the pull request Sent
+- **NotificationSender Interface**  
+  Sends messages to a specific channel (Slack, Telegram, etc).
 
-### 📄 Example Failure Notification Payload
+- **NotificationService**  
+  Orchestrates processing and sending notifications.
 
-```json
-{
-  "repo": "derrick/ci-alert-bot-java-api",
-  "branch": "refs/heads/main",
-  "commit": "sha256...",
-  "status": "FAILED",
-  "author": "derrick",
-  "url": "https://github.com/derrick/ci-alert-bot-java-api/actions/runs/1234567890"
-}
+- **Webhook Controller**  
+  Receives webhooks from GitHub or other systems via REST API.
+
+- **Rules Engine**  
+  Defines notification logic per event type, channel, and target users.
+
+- **Scheduler**  
+  Runs automated checks for proactive notifications (e.g. stale PR reminders).
+
+- **Notification History Logger**  
+  Stores notification metadata in a database for audit.
+
+---
+
+## ⚡ **Getting Started**
+
+### 1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/notification-bot.git
+cd notification-bot
