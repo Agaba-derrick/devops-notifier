@@ -1,0 +1,8 @@
+package derrick.service;
+
+public interface PullRequestService {
+    void commentOnPullRequest(String payload);
+    void validatePullRequest(String payload);
+    void mergePullRequest(String payload);
+    String fetchPullRequestInfo(String pullRequestId);
+}

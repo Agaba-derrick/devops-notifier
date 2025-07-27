@@ -1,4 +1,4 @@
-package com.derick.notificationbot;
+package derrick.Notificationbot.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
