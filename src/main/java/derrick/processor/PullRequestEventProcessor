@@ -1,0 +1,53 @@
+package derrick.processor;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import derrick.service.PullRequestService;
+import derrick.util.Logger;
+
+public class PullRequestEventProcessor implements EventProcessor {
+
+    private static final String SUPPORTED_EVENT = "pull_request";
+
+    private final ObjectMapper objectMapper;
+    private final PullRequestService pullRequestService;
+    private final Logger logger;
+
+    public PullRequestEventProcessor(PullRequestService pullRequestService, Logger logger) {
+        this.objectMapper = new ObjectMapper();
+        this.pullRequestService = pullRequestService;
+        this.logger = logger;
+    }
+
+    @Override
+    public boolean supports(String eventType) {
+        return SUPPORTED_EVENT.equalsIgnoreCase(eventType);
+    }
+
+    @Override
+    public void processEvent(String payload) {
+        try {
+            JsonNode root = objectMapper.readTree(payload);
+            JsonNode actionNode = root.path("action");
+            JsonNode pullRequestNode = root.path("pull_request");
+
+            if (actionNode.isMissingNode() || pullRequestNode.isMissingNode()) {
+                logger.warn("Missing pull request action or data in payload.");
+                return;
+            }
+
+            String action = actionNode.asText();
+            String prTitle = pullRequestNode.path("title").asText();
+            String prUrl = pullRequestNode.path("html_url").asText();
+            String author = pullRequestNode.path("user").path("login").asText();
+
+            pullRequestService.handlePullRequest(action, prTitle, prUrl, author);
+
+            logger.info(String.format("Processed pull request event: action=%s, title=%s, author=%s", 
+                        action, prTitle, author));
+
+        } catch (Exception e) {
+            logger.error("Failed to process pull request event", e);
+        }
+    }
+}

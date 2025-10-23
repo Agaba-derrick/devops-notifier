@@ -1,0 +1,14 @@
+package derrick.logging.impl;
+
+import derrick.logging.Logger;
+
+public class ConsoleLogger implements Logger {
+    public void info(String message) {
+        System.out.println("[INFO] " + message); // Can replace later with structured logging
+    }
+
+    public void error(String message, Throwable t) {
+        System.err.println("[ERROR] " + message);
+        t.printStackTrace(System.err);
+    }
+}
