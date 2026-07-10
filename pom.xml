@@ -13,17 +13,28 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.derick</groupId>
-    <artifactId>ci-alert-bot</artifactId>
+    <groupId>com.devassistant</groupId>
+    <artifactId>dev-assistant-platform</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>CI Alert Bot</name>
-    <description>Java-based CI/CD Notification Bot</description>
+    <name>Developer Assistant Platform</name>
+    <description>AI-powered Developer Assistant Platform</description>
 
     <properties>
         <java.version>21</java.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!-- Spring Boot Starter Web -->
@@ -36,6 +47,19 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Starter WebFlux (required for Spring AI) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+        <!-- Spring AI OpenAI Starter -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+            <version>1.0.0-M1</version>
         </dependency>
 
         <!-- Lombok -->
@@ -80,6 +104,16 @@
                 <version>3.2.5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.43.0</version>
+                <configuration>
+                    <java>
+                        <googleJavaFormat/>
+                    </java>
                 </configuration>
             </plugin>
         </plugins>
