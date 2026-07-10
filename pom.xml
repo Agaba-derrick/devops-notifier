@@ -69,11 +69,10 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- JUnit 5 -->
+        <!-- Spring Boot Test Starter - brings JUnit 5, Mockito, MockMvc, and AssertJ -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
